@@ -1,0 +1,36 @@
+# --- Virtual environments (NEVER commit these) ---
+venv/
+.venv/
+env/
+ENV/
+conda-env/
+
+# --- Python caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# --- Notebook / IDE clutter ---
+.vscode/*
+!.vscode/settings.json
+.idea/
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+
+# --- Outputs you can regenerate ---
+reports/*.png
+
+# --- Data policy ---
+# Keep the small sample dataset tracked (it's needed to run the lab),
+# but ignore large/raw data dumps. Adjust to your course's rules.
+data/raw/
+*.parquet
+
+# --- Sandbox scratch artifacts (safe to delete; never commit) ---
+_git_corrupt_ignore/
+_requirements_stale_ignore
+_probe.tmp
+*.tmp
