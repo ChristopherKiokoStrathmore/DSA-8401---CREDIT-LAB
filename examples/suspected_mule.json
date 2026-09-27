@@ -1,0 +1,17 @@
+{
+  "account_age_days": 18,
+  "txn_count_30d": 72,
+  "avg_txn_amount_kes": 7400.0,
+  "night_txn_ratio": 0.71,
+  "new_counterparty_ratio": 0.83,
+  "failed_txn_ratio": 0.28,
+  "device_change_count_90d": 4,
+  "sim_swap_90d": 1,
+  "airtime_topup_regularity": 0.08,
+  "utility_payment_count_90d": 0,
+  "merchant_payment_ratio": 0.05,
+  "savings_to_spend_ratio": 0.02,
+  "peer_transfer_velocity": 4.8,
+  "balance_volatility": 0.78,
+  "reactivation_burst": 1
+}

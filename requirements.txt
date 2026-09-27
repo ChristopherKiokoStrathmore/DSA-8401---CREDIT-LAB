@@ -1,14 +1,23 @@
-# DSA 8401 Applied Machine Learning - Week 1 Lab
-# Install into an activated virtual environment:
+# Nairobi Fintech Fraud Flag API (UNECA showcase) and the preserved
+# DSA 8401 Week 1 lab. Install into an activated virtual environment:
 #     pip install -r requirements.txt
-# Then LOCK exact resolved versions for true reproducibility:
-#     pip freeze > requirements.txt
 #
 # Ranges below are known to work on Python 3.11+.
 
-numpy>=1.26
-pandas>=2.1
+# --- Showcase API ---
+fastapi>=0.115
+uvicorn>=0.32
+pydantic>=2.6
 scikit-learn>=1.3
+pandas>=2.1
+numpy>=1.26
+joblib>=1.3
+
+# --- Tests (TestClient needs httpx) ---
+pytest>=8.0
+httpx>=0.27
+
+# --- Week 1 lab (preserved notebook and baseline script) ---
 matplotlib>=3.7
 jupyter>=1.0
 ipykernel>=6.0
