@@ -1,0 +1,11 @@
+# Free Render web service for the fraud-flag demo.
+# Dashboard: New → Blueprint, connect this repo, apply this file.
+# No environment variables and no secrets. Render sets PORT.
+services:
+  - type: web
+    name: nairobi-fraud-flag
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health

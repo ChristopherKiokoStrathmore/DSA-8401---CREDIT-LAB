@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Synthetic mobile-money fraud flag for a Nairobi fintech demonstration. Not production credit scoring.">
+  <meta name="theme-color" content="#13241c">
+  <title>__PRODUCT__</title>
+  <style>
+    :root {
+      --ink: #1a1814;
+      --muted: #5e584e;
+      --paper: #f3efe6;
+      --card: #fffcf7;
+      --line: #e3dacb;
+      --green: #0c6b4d;
+      --green-deep: #084a36;
+      --green-soft: #e7f5ef;
+      --amber: #8a5a12;
+      --amber-soft: #fbf3e4;
+      --red: #8f2433;
+      --red-soft: #fbecee;
+      --header: #13241c;
+      --gold: #c4a265;
+      --shadow: 0 10px 30px rgba(28, 24, 18, 0.06);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 400px at 10% -10%, rgba(196, 162, 101, 0.16), transparent 50%),
+        var(--paper);
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      background: var(--header);
+      color: #f6f3ec;
+    }
+
+    .brand {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 0.7rem;
+      background: var(--green);
+      color: #f6f3ec;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .kicker {
+      margin: 0;
+      color: var(--gold);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .product {
+      margin: 0;
+      font-family: Georgia, "Iowan Old Style", serif;
+      font-size: 1.15rem;
+    }
+
+    .version {
+      margin: 0;
+      color: #d9d0c2;
+      font-size: 0.85rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 1.75rem 0 3rem;
+    }
+
+    h1, h2, legend {
+      font-family: Georgia, "Iowan Old Style", serif;
+      font-weight: 600;
+    }
+
+    h1 {
+      margin: 0 0 0.6rem;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .lede {
+      max-width: 68ch;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .owner {
+      margin: 0.85rem 0 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .caveat {
+      margin: 1rem 0 0;
+      padding: 0.85rem 1rem;
+      border-left: 4px solid var(--gold);
+      background: #fff8ea;
+      max-width: 78ch;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 0.85fr);
+      grid-template-areas:
+        "presets presets"
+        "form result";
+      gap: 1rem 1.25rem;
+      align-items: start;
+      margin-top: 1.5rem;
+    }
+
+    .presets { grid-area: presets; }
+    #score-form { grid-area: form; }
+    .result { grid-area: result; }
+
+    .section-title {
+      margin: 0 0 0.65rem;
+      font-size: 1.15rem;
+    }
+
+    .preset-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    button, input, select { font: inherit; color: inherit; }
+
+    .preset {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      text-align: left;
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+    }
+
+    .preset[aria-pressed="true"] {
+      border-color: var(--green);
+      background: var(--green-soft);
+      box-shadow: inset 0 0 0 1px var(--green);
+    }
+
+    .preset-title { font-weight: 600; }
+    .preset-copy { color: var(--muted); font-size: 0.9rem; }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 1rem 1rem 1.15rem;
+    }
+
+    fieldset {
+      border: 0;
+      margin: 0 0 0.4rem;
+      padding: 0;
+      min-width: 0;
+    }
+
+    legend {
+      padding: 0.85rem 0 0.45rem;
+      font-size: 1.05rem;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem 0.9rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 0;
+    }
+
+    .field-name { font-size: 0.92rem; font-weight: 600; }
+
+    .hint { color: var(--muted); font-size: 0.78rem; line-height: 1.35; }
+
+    input, select {
+      width: 100%;
+      padding: 0.55rem 0.65rem;
+      border: 1px solid #d5ccbe;
+      border-radius: 8px;
+      background: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      align-items: center;
+      margin-top: 0.4rem;
+    }
+
+    .score-button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 0.8rem 1.2rem;
+      background: var(--green);
+      color: #f7fffb;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .score-button:hover { background: var(--green-deep); }
+    .score-button:disabled { opacity: 0.65; cursor: wait; }
+
+    .action-note { margin: 0; color: var(--muted); font-size: 0.88rem; }
+
+    .result {
+      position: sticky;
+      top: 1rem;
+    }
+
+    .result h2 { margin: 0 0 0.35rem; font-size: 1.35rem; }
+
+    .band-key { margin: 0 0 0.9rem; color: var(--muted); font-size: 0.85rem; }
+
+    .result-kicker {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .prob {
+      margin: 0.1rem 0 0;
+      font-family: Georgia, "Iowan Old Style", serif;
+      font-size: 3.2rem;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .prob-raw { margin: 0.35rem 0 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .band {
+      display: inline-block;
+      margin: 0 0 0.9rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+    }
+
+    .band-low { color: var(--green-deep); background: var(--green-soft); }
+    .band-medium { color: var(--amber); background: var(--amber-soft); }
+    .band-high { color: var(--red); background: var(--red-soft); }
+
+    .result.tone-low { border-color: #b7dfd0; }
+    .result.tone-medium { border-color: #ead7b0; }
+    .result.tone-high { border-color: #efc4cb; }
+
+    .meter {
+      position: relative;
+      height: 0.7rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #d7efe6 0 30%, #f3e6cc 30% 60%, #f6d5da 60% 100%);
+      overflow: hidden;
+    }
+
+    .meter-fill {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: var(--ink);
+      border-radius: 999px;
+      transition: width 180ms ease;
+    }
+
+    .meter-fill.low { background: var(--green); }
+    .meter-fill.medium { background: #b7791f; }
+    .meter-fill.high { background: var(--red); }
+
+    .reasons { margin: 0.4rem 0 0; padding-left: 1.15rem; }
+    .reasons li { margin: 0.35rem 0; }
+    .reasons-title { margin: 1rem 0 0; font-size: 1rem; }
+
+    .disclaimer, .pending, .error {
+      margin: 0.9rem 0 0;
+      font-size: 0.9rem;
+    }
+
+    .disclaimer, .pending { color: var(--muted); }
+    .error { color: var(--red); }
+
+    details { margin-top: 1rem; }
+    summary { cursor: pointer; color: var(--muted); }
+    pre {
+      margin: 0.5rem 0 0;
+      padding: 0.75rem;
+      overflow: auto;
+      border-radius: 8px;
+      background: #f6f1e8;
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+
+    .footer {
+      width: min(1120px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 0 0 2.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .footer p { margin: 0.35rem 0; }
+    .footer a { color: var(--green-deep); }
+
+    :focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 900px) {
+      .workspace {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "presets"
+          "result"
+          "form";
+      }
+      .result { position: static; }
+      .preset-row, .fields { grid-template-columns: 1fr; }
+      .top { align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .meter-fill { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">FF</span>
+      <div>
+        <p class="kicker">UNECA African AI Innovators</p>
+        <p class="product">__PRODUCT__</p>
+      </div>
+    </div>
+    <p class="version">Model __MODEL_VERSION__</p>
+  </header>
+
+  <main class="wrap">
+    <h1>Score one synthetic wallet</h1>
+    <p class="lede">This page scores one synthetic mobile-money wallet for a Nairobi fintech fraud flag and returns a probability, a risk band, and short reasons. It is a demonstration, not production credit scoring, and a person still has to review any adverse flag. Regular airtime, utility payments, merchant spend, and savings can lower the flag, so a young thin-file wallet is not treated as suspicious only because it is new.</p>
+    <p class="owner">Owner: __OWNER__</p>
+    <p class="caveat" id="data-caveat">__CAVEAT__</p>
+
+    <div class="workspace">
+      <section class="presets" aria-labelledby="presets-title">
+        <h2 id="presets-title" class="section-title">Preset wallets</h2>
+        <div class="preset-row" role="group" aria-label="Preset wallets">
+          __PRESETS__
+        </div>
+      </section>
+
+      <form id="score-form" class="panel" autocomplete="off">
+        <h2 class="section-title">Wallet aggregates</h2>
+        __FIELDS__
+        <div class="actions">
+          <button type="submit" class="score-button" id="score-button">Score this wallet</button>
+          <p class="action-note">Sends these figures to <code>POST /score</code>. Nothing is stored.</p>
+        </div>
+      </form>
+
+      <aside class="result panel" id="result" aria-labelledby="result-title">
+        <h2 id="result-title">Score</h2>
+        <p class="band-key">__BAND_KEY__</p>
+        <div id="result-body" aria-live="polite">
+          <p class="pending">Choose a preset or edit the figures, then score the wallet.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>__DISCLAIMER__</p>
+    <p><a href="/docs">API docs</a> · <a href="/health">Health</a></p>
+  </footer>
+
+  <noscript>
+    <p class="footer">Scoring in the page needs JavaScript. <code>POST /score</code> still accepts the example JSON files.</p>
+  </noscript>
+
+  <script id="demo-config" type="application/json">__DEMO_CONFIG__</script>
+  <script>
+    const config = JSON.parse(document.getElementById("demo-config").textContent);
+    const form = document.getElementById("score-form");
+    const result = document.getElementById("result");
+    const resultBody = document.getElementById("result-body");
+    const scoreButton = document.getElementById("score-button");
+    let busy = false;
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function readPayload() {
+      const payload = {};
+      form.querySelectorAll("[data-kind]").forEach((el) => {
+        payload[el.name] = el.dataset.kind === "number" ? Number(el.value) : Number.parseInt(el.value, 10);
+      });
+      return payload;
+    }
+
+    function markPreset(id) {
+      document.querySelectorAll("[data-preset]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.preset === id));
+      });
+    }
+
+    function matchingPreset(payload) {
+      for (const preset of config.presets) {
+        const same = Object.entries(preset.values).every(([name, value]) => payload[name] === Number(value));
+        if (same) return preset.id;
+      }
+      return "";
+    }
+
+    function renderError(message) {
+      result.classList.remove("tone-low", "tone-medium", "tone-high");
+      resultBody.innerHTML = `<p class="error" role="alert">${escapeHtml(message)}</p>`;
+    }
+
+    function renderScore(body, payload) {
+      const band = body.risk_band;
+      const pct = (Number(body.probability) * 100).toFixed(1);
+      const width = Math.max(0, Math.min(100, Number(body.probability) * 100));
+      const reasons = (body.reasons || []).map((reason) => `<li>${escapeHtml(reason)}</li>`).join("");
+      result.classList.remove("tone-low", "tone-medium", "tone-high");
+      result.classList.add(`tone-${band}`);
+      resultBody.innerHTML = `
+        <p class="result-kicker">Fraud probability</p>
+        <p class="prob">${pct}%</p>
+        <p class="prob-raw">${escapeHtml(body.probability)} · model ${escapeHtml(body.model_version)}</p>
+        <p class="band band-${escapeHtml(band)}">${escapeHtml(band)}</p>
+        <div class="meter" role="img" aria-label="Probability ${pct} percent, ${escapeHtml(band)} band">
+          <span class="meter-fill ${escapeHtml(band)}" style="width:${width}%"></span>
+        </div>
+        <h3 class="reasons-title">Reasons</h3>
+        <ol class="reasons">${reasons}</ol>
+        <p class="disclaimer">${escapeHtml(body.disclaimer || "")}</p>
+        <details>
+          <summary>Request sent to /score</summary>
+          <pre>${escapeHtml(JSON.stringify(payload, null, 2))}</pre>
+        </details>
+      `;
+    }
+
+    function formatApiError(status, payload) {
+      if (payload && Array.isArray(payload.detail)) {
+        return payload.detail.map((item) => {
+          const loc = (item.loc || []).filter((part) => part !== "body").join(".");
+          return loc ? `${loc}: ${item.msg}` : item.msg;
+        }).join(" ");
+      }
+      if (payload && typeof payload.detail === "string") return payload.detail;
+      return `Score request failed (${status}).`;
+    }
+
+    async function scoreWallet(scroll) {
+      if (busy) return;
+      if (!form.reportValidity()) return;
+      const payload = readPayload();
+      if (Object.values(payload).some((value) => !Number.isFinite(value))) {
+        renderError("Enter a number for every field.");
+        return;
+      }
+      markPreset(matchingPreset(payload));
+      busy = true;
+      scoreButton.disabled = true;
+      scoreButton.textContent = "Scoring…";
+      result.setAttribute("aria-busy", "true");
+      try {
+        const response = await fetch("/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        let body = null;
+        try {
+          body = await response.json();
+        } catch (err) {
+          renderError("The API returned a response that was not JSON.");
+          return;
+        }
+        if (!response.ok) {
+          renderError(formatApiError(response.status, body));
+          return;
+        }
+        renderScore(body, payload);
+        if (scroll && window.matchMedia("(max-width: 900px)").matches) {
+          result.scrollIntoView({ block: "nearest" });
+        }
+      } catch (err) {
+        renderError("The score request did not reach the API.");
+      } finally {
+        busy = false;
+        scoreButton.disabled = false;
+        scoreButton.textContent = "Score this wallet";
+        result.removeAttribute("aria-busy");
+      }
+    }
+
+    function applyPreset(id, scroll) {
+      const preset = config.presets.find((item) => item.id === id);
+      if (!preset) return;
+      Object.entries(preset.values).forEach(([name, value]) => {
+        const field = document.getElementById(`f-${name}`);
+        if (field) field.value = String(value);
+      });
+      markPreset(id);
+      scoreWallet(scroll);
+    }
+
+    document.querySelectorAll("[data-preset]").forEach((button) => {
+      button.addEventListener("click", () => applyPreset(button.dataset.preset, true));
+    });
+
+    form.addEventListener("input", () => markPreset(matchingPreset(readPayload())));
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      scoreWallet(true);
+    });
+
+    applyPreset("established", false);
+  </script>
+</body>
+</html>
