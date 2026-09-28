@@ -1,0 +1,89 @@
+{
+  "product": "Nairobi Fintech Fraud Flag API",
+  "owner": "Christopher Nguu Kioko",
+  "model_version": "0.1.0",
+  "algorithm": "StandardScaler + LogisticRegression",
+  "label": "Simulated fraud_flag on synthetic mobile-money wallets. Not estimated from real fraud cases.",
+  "data": {
+    "source": "app.synthetic.generate",
+    "n_samples": 12000,
+    "random_state": 42,
+    "pii": "none"
+  },
+  "features": [
+    "account_age_days",
+    "txn_count_30d",
+    "avg_txn_amount_kes",
+    "night_txn_ratio",
+    "new_counterparty_ratio",
+    "failed_txn_ratio",
+    "device_change_count_90d",
+    "sim_swap_90d",
+    "airtime_topup_regularity",
+    "utility_payment_count_90d",
+    "merchant_payment_ratio",
+    "savings_to_spend_ratio",
+    "peer_transfer_velocity",
+    "balance_volatility",
+    "reactivation_burst"
+  ],
+  "omitted_on_purpose": [
+    "kyc_tier \u2014 a lower formal KYC tier must not raise the fraud flag",
+    "gender, ethnicity, religion, precise location, name, MSISDN, national ID"
+  ],
+  "risk_bands": {
+    "low": "probability < 0.30",
+    "medium": "0.30 <= probability < 0.60",
+    "high": "probability >= 0.60"
+  },
+  "metrics": {
+    "test_roc_auc": 0.7931761410831932,
+    "test_average_precision": 0.5642486961097746,
+    "test_brier": 0.13615856019155226,
+    "dummy_prior_roc_auc": 0.5,
+    "dummy_prior_average_precision": 0.22375,
+    "positive_rate_all": 0.22358333333333333,
+    "n_train": 9600,
+    "n_test": 2400
+  },
+  "coefficient_signs": {
+    "account_age_days": -1,
+    "txn_count_30d": 1,
+    "avg_txn_amount_kes": 1,
+    "night_txn_ratio": 1,
+    "new_counterparty_ratio": 1,
+    "failed_txn_ratio": 1,
+    "device_change_count_90d": 1,
+    "sim_swap_90d": 1,
+    "airtime_topup_regularity": -1,
+    "utility_payment_count_90d": -1,
+    "merchant_payment_ratio": -1,
+    "savings_to_spend_ratio": -1,
+    "peer_transfer_velocity": 1,
+    "balance_volatility": 1,
+    "reactivation_burst": 1
+  },
+  "coefficients": {
+    "account_age_days": -0.24128045835680845,
+    "txn_count_30d": 0.1817311188223056,
+    "avg_txn_amount_kes": 0.07923722354993074,
+    "night_txn_ratio": 0.3776092794466869,
+    "new_counterparty_ratio": 0.3204399006319435,
+    "failed_txn_ratio": 0.2410701163316379,
+    "device_change_count_90d": 0.3822364113772257,
+    "sim_swap_90d": 0.4539345580536222,
+    "airtime_topup_regularity": -0.21804866359930503,
+    "utility_payment_count_90d": -0.41312776019483805,
+    "merchant_payment_ratio": -0.2588373471427254,
+    "savings_to_spend_ratio": -0.27735091822177294,
+    "peer_transfer_velocity": 0.4088206633368318,
+    "balance_volatility": 0.2777847713668764,
+    "reactivation_burst": 0.30002616590004755
+  },
+  "versions": {
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "joblib": "1.6.0"
+  }
+}
