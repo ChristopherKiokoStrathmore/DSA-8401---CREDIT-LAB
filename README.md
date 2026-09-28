@@ -5,7 +5,8 @@ Owner: **Christopher Nguu Kioko**
 A small, demoable scoring service for the UNECA African AI Innovators showcase
 (deadline ~2 October 2026). `POST /score` turns synthetic mobile-money and
 thin-file aggregates into a fraud **probability**, a **risk band**, and up to
-three short **reasons**.
+three short **reasons**. The same score is on a browser page at `/`, so a
+reviewer can try the example wallets without curl.
 
 The Week 1 credit-lab baseline is still in this repository. It is a leak-free
 regression on a public real-estate table. This API is a separate classification
@@ -56,10 +57,16 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-The committed model artifact loads at startup. Interactive docs (useful on a
-showcase laptop) are at <http://127.0.0.1:8000/docs>.
+The committed model artifact loads at startup. Open the demo in a browser:
 
-Check the process, then score the two checked-in wallets:
+<http://127.0.0.1:8000/>
+
+`/demo` serves the same page. Pick **Established wallet**, **Young thin-file**,
+or **Suspected mule** (the files in `examples/`), edit any figure, and score it.
+The page posts JSON to `/score` and shows the probability, risk band, and
+reasons. Interactive API docs remain at <http://127.0.0.1:8000/docs>.
+
+Check the process from a terminal, then score two checked-in wallets:
 
 ```bash
 curl -s http://127.0.0.1:8000/health
@@ -86,6 +93,74 @@ rewrites `models/nairobi_fraud_flag.joblib` and `models/metadata.json`:
 ```bash
 python -m app.train
 ```
+
+## Host the demo for free
+
+Local uvicorn is enough for a review on one laptop. To put the same page on a
+public URL, use the Dockerfile. It binds to `0.0.0.0` and `$PORT`, defaulting
+to **7860**. No API keys and no paid hardware are required for the Render path
+below.
+
+### Docker on your machine
+
+```bash
+docker build -t nairobi-fraud-flag .
+docker run --rm -p 8000:7860 nairobi-fraud-flag
+```
+
+Open <http://127.0.0.1:8000/>. The image contains `app/`, `examples/`, and
+`models/` only. The Week 1 notebook and real-estate CSV stay out of the image.
+
+### Render (free web service)
+
+Render’s free instance sleeps after inactivity. The first request after sleep
+can take about a minute. No environment variables are required. Render sets
+`PORT` itself.
+
+1. Sign in at <https://dashboard.render.com> and choose **New → Blueprint**.
+2. Connect the GitHub repository `ChristopherKiokoStrathmore/DSA-8401---CREDIT-LAB`.
+3. Render reads `render.yaml` at the repo root. Apply it. The service name is
+   `nairobi-fraud-flag`, the runtime is Docker, the plan is **Free**, and the
+   health check is `/health`.
+4. If that name is already taken on the account, change `name` in `render.yaml`
+   before applying. Do not add secrets.
+5. When the deploy is live, open the service URL. That URL is the demo. `/health`
+   and `/score` are on the same host.
+
+The manual equivalent, if you skip the Blueprint: **New → Web Service**, connect
+the same repo, runtime **Docker**, instance type **Free**, health check path
+`/health`, and leave environment variables empty.
+
+### Hugging Face Spaces
+
+The Dockerfile follows the Docker Space layout: it runs as uid **1000** and
+listens on port **7860**. Creating a new Gradio or Docker Space currently
+requires a paid Hugging Face plan (PRO, Team, or Enterprise), even though CPU
+basic hardware has no hourly price after the Space exists. Use Render above
+when the host has to be free. If you already have a plan that can create a
+Docker Space:
+
+1. Open <https://huggingface.co/new-space>. Name it `nairobi-fraud-flag` (or
+   any unused name). Choose SDK **Docker** and hardware **CPU basic**. Do not
+   add secrets.
+2. Upload this repository, or clone the Space and copy in `Dockerfile`,
+   `requirements.txt`, `app/`, `examples/`, and `models/`.
+3. Put this block at the top of the Space README. If the upload replaced that
+   README with this repository’s README, paste the block above the existing
+   text. The GitHub README does not need it:
+
+```yaml
+---
+title: Nairobi Fintech Fraud Flag
+emoji: 🔍
+colorFrom: green
+colorTo: yellow
+sdk: docker
+app_port: 7860
+---
+```
+
+4. Wait until the Space build is running, then open the Space URL.
 
 ## What `/score` returns
 
@@ -187,11 +262,16 @@ system.
 
 ```
 app/                     FastAPI app, simulator, training, scoring
-  main.py                GET /health, POST /score
+  main.py                GET /, GET /demo, GET /health, POST /score
+  demo.py                browser demo (presets from examples/)
+  templates/demo.html    demo markup and page script
   train.py               python -m app.train
-examples/                curl payloads (synthetic)
+examples/                curl payloads and demo presets (synthetic)
 models/                  joblib pipeline + metadata.json
 tests/test_score.py      /score and /health checks
+tests/test_demo.py       demo page smoke test
+Dockerfile               public demo image (Render, or a Docker Space)
+render.yaml              Render free web service blueprint
 data/Real estate.csv     Week 1 lab only (preserved)
 notebooks/               Week 1 walkthrough (preserved)
 src/baseline_pipeline.py Week 1 regression baseline (preserved)

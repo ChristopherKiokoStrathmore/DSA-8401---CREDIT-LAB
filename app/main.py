@@ -4,7 +4,9 @@
 """
 
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
+from app.demo import render_demo_page
 from app.features import DISCLAIMER, MODEL_VERSION, PRODUCT_NAME
 from app.schemas import HealthResponse, ScoreRequest, ScoreResponse
 from app.scoring import get_scorer
@@ -17,9 +19,16 @@ app = FastAPI(
         "Scores one wallet from behavioural and thin-file aggregates. "
         "Training rows are synthetic. The score is a demonstration probability, "
         "a risk band, and up to three short reasons. "
+        "A browser demo of the same score is served at / . "
         + DISCLAIMER
     ),
 )
+
+
+@app.get("/", include_in_schema=False)
+@app.get("/demo", include_in_schema=False)
+def demo_page() -> HTMLResponse:
+    return HTMLResponse(render_demo_page())
 
 
 @app.get("/health", response_model=HealthResponse)
