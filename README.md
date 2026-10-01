@@ -1,17 +1,24 @@
 # Nairobi Fintech Fraud Flag API
 
+[![CI](https://github.com/ChristopherKiokoStrathmore/DSA-8401---CREDIT-LAB/actions/workflows/ci.yml/badge.svg)](https://github.com/ChristopherKiokoStrathmore/DSA-8401---CREDIT-LAB/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
 Owner: **Christopher Nguu Kioko**
 
 A small, demoable scoring service for the UNECA African AI Innovators showcase
 (deadline ~2 October 2026). `POST /score` turns synthetic mobile-money and
 thin-file aggregates into a fraud **probability**, a **risk band**, and up to
 three short **reasons**. The same score is on a browser page at `/`, so a
-reviewer can try the example wallets without curl.
+reviewer can try the example wallets without curl. This API is a classification
+product built for the showcase. The data is simulated.
 
-The Week 1 credit-lab baseline is still in this repository. It is a leak-free
-regression on a public real-estate table. This API is a separate classification
-product built for the showcase. See [Why this name](#why-this-name) and
-[Week 1 lab](#week-1-lab-preserved).
+**Results (simulated data):** hold-out ROC-AUC is 0.7931761410831932, versus 0.5
+for a prior dummy baseline (`DummyClassifier(strategy="prior")`). Those are
+`test_roc_auc` and `dummy_prior_roc_auc` in `models/metadata.json`. Rescoring
+the committed `models/nairobi_fraud_flag.joblib` on the same 12,000 synthetic
+wallets (stratified 80/20 split, `random_state=42`) reproduces both figures.
+They measure recovery of the simulator, not a field false-positive rate.
 
 ## Why this name
 
@@ -61,7 +68,11 @@ The committed model artifact loads at startup. Open the demo in a browser:
 
 <http://127.0.0.1:8000/>
 
-`/demo` serves the same page. Pick **Established wallet**, **Young thin-file**,
+`/demo` serves the same page.
+
+![Nairobi Fintech Fraud Flag demo at /demo](docs/demo.png)
+
+Pick **Established wallet**, **Young thin-file**,
 or **Suspected mule** (the files in `examples/`), edit any figure, and score it.
 The page posts JSON to `/score` and shows the probability, risk band, and
 reasons. Interactive API docs remain at <http://127.0.0.1:8000/docs>.
@@ -109,11 +120,15 @@ docker run --rm -p 8000:7860 nairobi-fraud-flag
 ```
 
 Open <http://127.0.0.1:8000/>. The image contains `app/`, `examples/`, and
-`models/` only. The Week 1 notebook and real-estate CSV stay out of the image.
+`models/` only. The Week 1 notebook and real-estate CSV in `course/` stay out of the image.
 
-### Render (free web service)
+### Deploy with the included Render Blueprint
 
-Render’s free instance sleeps after inactivity. The first request after sleep
+`https://nairobi-fraud-flag.onrender.com` returns 404 and is not deployed.
+Deploy with the included Render Blueprint until a service is live. The steps
+below stay as the way to host it.
+
+Render's free instance sleeps after inactivity. The first request after sleep
 can take about a minute. No environment variables are required. Render sets
 `PORT` itself.
 
@@ -204,8 +219,8 @@ then `LogisticRegression`, fit on 12,000 synthetic wallets from
 `app.synthetic.generate` (`random_state=42`). The split is 80/20, stratified,
 and the test fold is scored once. A `DummyClassifier(strategy="prior")` is the
 floor reported in `models/metadata.json`. Hold-out ROC-AUC on this simulation is
-about 0.79. The label is a noisy function of the same features, so that figure
-measures recovery of the simulator. It is **not** a field false-positive rate
+0.7931761410831932, and the prior dummy ROC-AUC is 0.5. The label is a noisy function of the same features, so those figures
+measure recovery of the simulator. They are **not** a field false-positive rate
 and must not be quoted as one.
 
 The Week 1 discipline still applies: scale inside the pipeline, compare with a
@@ -247,7 +262,7 @@ sit on two African policy tracks this demo is built to illustrate.
 
 **Agenda 2063**
 
-- **Aspiration 1** — a prosperous Africa based on inclusive growth and
+- **Aspiration 1** - a prosperous Africa based on inclusive growth and
   sustainable development, including **Goal 1** (a high standard of living and
   well-being) and **Goal 4** (transformed economies).
 - Digital financial inclusion is part of that growth path: mobile-money rails
@@ -272,15 +287,15 @@ tests/test_score.py      /score and /health checks
 tests/test_demo.py       demo page smoke test
 Dockerfile               public demo image (Render, or a Docker Space)
 render.yaml              Render free web service blueprint
-data/Real estate.csv     Week 1 lab only (preserved)
-notebooks/               Week 1 walkthrough (preserved)
-src/baseline_pipeline.py Week 1 regression baseline (preserved)
+course/                  Week 1 lab: Real estate.csv and AML_Week_1.ipynb
+src/baseline_pipeline.py Week 1 regression baseline (reads course/Real estate.csv)
 ```
 
-## Week 1 lab (preserved)
+## Week 1 lab
 
 Applied Machine Learning, MSc Data Science & Analytics (Strathmore University).
-DSA 8401, Week 1: an end-to-end **baseline**.
+DSA 8401, Week 1: an end-to-end **baseline**. The real-estate CSV and notebook
+are in `course/` (`course/Real estate.csv`, `course/AML_Week_1.ipynb`).
 
 The lab walks the ML lifecycle once on a small public dataset. The goal is not
 a clever model. It is a **leak-free baseline** that later techniques have to beat.

@@ -33,7 +33,7 @@ RANDOM_STATE = 42
 
 # Resolve data path relative to THIS file, so the script runs from anywhere.
 REPO_ROOT = Path(__file__).resolve().parents[1]
-LOCAL_CSV = REPO_ROOT / "data" / "Real estate.csv"
+LOCAL_CSV = REPO_ROOT / "course" / "Real estate.csv"
 URL = (
     "https://raw.githubusercontent.com/NUELBUNDI/"
     "Machine-Learning-Data-Set/refs/heads/main/Real%20estate.csv"

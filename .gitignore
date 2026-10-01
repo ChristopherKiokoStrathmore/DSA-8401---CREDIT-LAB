@@ -12,8 +12,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # --- Notebook / IDE clutter ---
-.vscode/*
-!.vscode/settings.json
+.vscode/
 .idea/
 
 # --- OS junk ---
