@@ -6,6 +6,10 @@
 
 Owner: **Christopher Nguu Kioko**
 
+**Live demo:** <https://nairobi-fraud-flag.onrender.com>
+
+The free tier sleeps, and the first load can take ~30-60s.
+
 A small, demoable scoring service for the UNECA African AI Innovators showcase
 (deadline ~2 October 2026). `POST /score` turns synthetic mobile-money and
 thin-file aggregates into a fraud **probability**, a **risk band**, and up to
@@ -124,9 +128,7 @@ Open <http://127.0.0.1:8000/>. The image contains `app/`, `examples/`, and
 
 ### Deploy with the included Render Blueprint
 
-`https://nairobi-fraud-flag.onrender.com` returns 404 and is not deployed.
-Deploy with the included Render Blueprint until a service is live. The steps
-below stay as the way to host it.
+The service is live at <https://nairobi-fraud-flag.onrender.com> (`/health` returns ok).
 
 Render's free instance sleeps after inactivity. The first request after sleep
 can take about a minute. No environment variables are required. Render sets
