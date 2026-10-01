@@ -1,5 +1,7 @@
 # Nairobi Fintech Fraud Flag API
 
+![Problem, method, and hold-out result: fraud hidden in the rails, the scoring path, and ROC-AUC 0.793 versus a prior dummy of 0.5. Synthetic data.](assets/hero.png)
+
 [![CI](https://github.com/ChristopherKiokoStrathmore/DSA-8401---CREDIT-LAB/actions/workflows/ci.yml/badge.svg)](https://github.com/ChristopherKiokoStrathmore/DSA-8401---CREDIT-LAB/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -9,6 +11,12 @@ Owner: **Christopher Nguu Kioko**
 **Live demo:** <https://nairobi-fraud-flag.onrender.com>
 
 The free tier sleeps, and the first load can take ~30-60s.
+
+## Demo
+
+![Scoring three synthetic presets on the live page: established wallet 1.1% low, suspected mule 100.0% high, young thin-file 1.3% low.](assets/demo.gif)
+
+Recorded on <https://nairobi-fraud-flag.onrender.com>. The page loads the established-wallet preset at 1.1% (low), then the recording selects **Suspected mule** at 100.0% (high) and **Young thin-file** at 1.3% (low). Those are the page's one-decimal readings of probabilities 0.011406, 0.999996, and 0.013458 from `POST /score` on the files in `examples/`. Synthetic data.
 
 A small, demoable scoring service for the UNECA African AI Innovators showcase
 (deadline ~2 October 2026). `POST /score` turns synthetic mobile-money and
@@ -228,6 +236,18 @@ and must not be quoted as one.
 The Week 1 discipline still applies: scale inside the pipeline, compare with a
 dummy, do not treat a raw score as if it were a decision.
 
+![Hold-out ROC curve for the committed model on 2,400 synthetic test wallets.](assets/roc-curve.png)
+
+The curve is the committed `models/nairobi_fraud_flag.joblib` rescored on the same 12,000 synthetic wallets, stratified 80/20 split, `random_state=42`. It matches `test_roc_auc` in `models/metadata.json`. The gold diagonal is the prior dummy (ROC-AUC 0.5). Synthetic data.
+
+![Logistic coefficients on scaled features. Gold raises the simulated fraud log-odds and green pulls them down.](assets/coefficients.png)
+
+Signed coefficients from `models/metadata.json`, after `StandardScaler`. Gold bars raise the simulated fraud log-odds. Green bars pull them down, including the alternative-credit signals. Synthetic data.
+
+![API scores for the established wallet, the young thin-file wallet, and the suspected mule.](assets/example-scores.png)
+
+`POST /score` on the three files in `examples/`. Established wallet 0.011406 (low), young thin-file 0.013458 (low), suspected mule 0.999996 (high). Dashed lines mark the 0.30 and 0.60 band cuts. Synthetic data.
+
 ## Ethics
 
 - **Synthetic data only.** The generator invents wallets. The API does not
@@ -278,6 +298,7 @@ system.
 ## Layout
 
 ```
+assets/                  README figures: hero, demo GIF, and hold-out charts
 app/                     FastAPI app, simulator, training, scoring
   main.py                GET /, GET /demo, GET /health, POST /score
   demo.py                browser demo (presets from examples/)
