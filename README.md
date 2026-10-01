@@ -6,7 +6,7 @@
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-Owner: **Christopher Nguu Kioko**
+Owner: **Christopher Nguu**
 
 **Live demo:** <https://nairobi-fraud-flag.onrender.com>
 
@@ -354,5 +354,5 @@ training data, and reports lift over the baseline.
 ## License of the claims
 
 Course lab material stays in-tree. The fraud-flag layer is a student showcase
-prototype by Christopher Nguu Kioko for UNECA African AI Innovators. It is not
+prototype by Christopher Nguu for UNECA African AI Innovators. It is not
 an offer of a regulated scoring service.

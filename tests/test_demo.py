@@ -43,7 +43,8 @@ def test_demo_page_returns_html():
     assert "not production credit scoring" in lowered
     assert "training data is synthetic" in lowered
     assert "roc-auc ~0.79 is simulator recovery only" in lowered
-    assert "christopher nguu kioko" in lowered
+    assert "owner: christopher nguu" in lowered
+    assert "nguu kioko" not in lowered
     assert "established wallet" in lowered
     assert "young thin-file" in lowered
     assert "suspected mule" in lowered

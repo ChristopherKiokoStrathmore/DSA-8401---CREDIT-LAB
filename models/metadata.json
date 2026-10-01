@@ -1,6 +1,6 @@
 {
   "product": "Nairobi Fintech Fraud Flag API",
-  "owner": "Christopher Nguu Kioko",
+  "owner": "Christopher Nguu",
   "model_version": "0.1.0",
   "algorithm": "StandardScaler + LogisticRegression",
   "label": "Simulated fraud_flag on synthetic mobile-money wallets. Not estimated from real fraud cases.",

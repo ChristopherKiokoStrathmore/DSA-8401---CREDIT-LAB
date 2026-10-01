@@ -252,7 +252,7 @@ def render_demo_page() -> str:
         ]
     }
     payload = json.dumps(config, separators=(",", ":")).replace("<", "\\u003c")
-    owner = str(metadata.get("owner") or "Christopher Nguu Kioko")
+    owner = str(metadata.get("owner") or "Christopher Nguu")
     html = _TEMPLATE_PATH.read_text(encoding="utf-8")
     replacements = {
         "__PRODUCT__": escape(PRODUCT_NAME),

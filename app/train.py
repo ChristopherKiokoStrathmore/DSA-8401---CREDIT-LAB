@@ -116,7 +116,7 @@ def train(n_samples: int = N_SAMPLES, random_state: int = RANDOM_STATE) -> dict:
 
     metadata = {
         "product": "Nairobi Fintech Fraud Flag API",
-        "owner": "Christopher Nguu Kioko",
+        "owner": "Christopher Nguu",
         "model_version": MODEL_VERSION,
         "algorithm": "StandardScaler + LogisticRegression",
         "label": (
